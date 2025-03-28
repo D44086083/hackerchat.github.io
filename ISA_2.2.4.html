@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>資安小助手，去去駭客走</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        header .about-me {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+        }
+        .about-me button {
+            padding: 15px 30px;
+            font-size: 16px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .about-me button:hover {
+            background-color: #2980b9;
+        }
+        .about-section {
+            display: none;
+            background-color: #3498db;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .about-section p {
+            margin: 0;
+        }
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        .image-section img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto 20px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .actions {
+            text-align: center;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .results {
+            margin-top: 30px;
+            padding: 20px;
+            border: 5px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+        }
+        .results h2, .results h3 {
+            margin-top: 0;
+        }
+        .high-risk {
+            color: red;
+            background-color: white;
+            padding: 5px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        .medium-risk {
+            color: orange;
+            background-color: white;
+            padding: 5px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        .low-risk {
+            color: green;
+            background-color: white;
+            padding: 5px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        .strategy-high {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+        .strategy-medium {
+            color: #f57c00;
+            font-weight: bold;
+        }
+        .strategy-low {
+            color: #388e3c;
+            font-weight: bold;
+        }
+        .low-risk { color: green; font-weight: bold; }
+        .medium-risk { color: orange; font-weight: bold; }
+        .high-risk { color: red; font-weight: bold; 
+        }
+    </style>
+</head>
+<body>
+    <header>
+    <div class="container">
+        <h1>資安小助手，去去駭客走</h1>
+        <p>根據您的回答，我們將進行風險分析並提供建議。</p>
+        <div class="about-me">
+            <button onclick="toggleAboutSection()">關於本網站</button>
+        </div>
+    </header>
+    <div class="container">
+        <div id="about-section" class="about-section">
+            <p>關於本網站：本網站成立於2024年12月25日，由成大心理系畢業、即將就讀逢甲資安所的學生製作，希望能透過簡易駭客行為分析模型的方式，幫助更多人認識資安的重要性。</p>
+        </div>
+        <div class="image-section">
+            <img src="https://doqvf81n9htmm.cloudfront.net/data/crop_article/134386/kv.jpg_1140x855.jpg" alt="資通安全相關圖片">
+        </div>
+        <div class="question">
+            <label>您是否經常收到可疑電子郵件？</label>
+            <select>
+                <option value="never">從未</option>
+                <option value="rarely">很少</option>
+                <option value="sometimes">有時</option>
+                <option value="often">經常</option>
+                <option value="always">總是</option>
+            </select>
+        </div>
+        <div class="question">
+            <label>您的系統是否經常出現速度變慢或崩潰？</label>
+            <select>
+                <option value="never">從未</option>
+                <option value="rarely">很少</option>
+                <option value="sometimes">有時</option>
+                <option value="often">經常</option>
+                <option value="always">總是</option>
+            </select>
+        </div>
+        <div class="question">
+            <label>您是否經常注意到未知軟件的安裝？</label>
+            <select>
+                <option value="never">從未</option>
+                <option value="rarely">很少</option>
+                <option value="sometimes">有時</option>
+                <option value="often">經常</option>
+                <option value="always">總是</option>
+            </select>
+        </div>
+        <div class="question">
+            <label>您的密碼是否經常重複使用或設置過於簡單？</label>
+            <select>
+                <option value="never">從未</option>
+                <option value="rarely">很少</option>
+                <option value="sometimes">有時</option>
+                <option value="often">經常</option>
+                <option value="always">總是</option>
+            </select>
+        </div>
+        <div class="question">
+            <label>您是否經常訪問未知或可疑網站？</label>
+            <select>
+                <option value="never">從未</option>
+                <option value="rarely">很少</option>
+                <option value="sometimes">有時</option>
+                <option value="often">經常</option>
+                <option value="always">總是</option>
+            </select>
+        </div>
+        <div class="question">
+            <label>請簡述您遇到的問題或疑慮：</label>
+            <textarea id="userInput" placeholder="請描述您的遭遇..." rows="4" style="width:100%;"></textarea>
+        </div>
+        <button onclick="analyzeResponses()">提交並分析</button>
+        <div class="results" id="results">
+            <h2>分析結果：</h2>
+            <p>尚未進行分析，請回答問題後點擊"提交並分析"。</p>
+        </div>
+        <canvas id="riskChart" width="400" height="200"></canvas>
+    </div>
+    <script>
+        let riskCounts = { low: 0, medium: 0, high: 0 };
+        let clickCount = 0;
+        let riskChart;
+
+        function analyzeResponses() {
+            clickCount++;
+            const responses = Array.from(document.querySelectorAll('.question select')).map(select => select.value);
+            const userInput = document.getElementById("userInput").value.trim();
+
+            let totalRiskScore = 0;
+            responses.forEach(response => {
+                if (response === "always") totalRiskScore += 1;
+                else if (response === "often") totalRiskScore += 0.75;
+                else if (response === "sometimes") totalRiskScore += 0.5;
+                else if (response === "rarely") totalRiskScore += 0.25;
+            });
+
+            const riskThreshold = totalRiskScore / responses.length;
+            let riskLevel = "低風險";
+            let riskClass = "low";
+
+            if (riskThreshold > 0.75) {
+                riskLevel = "高風險";
+                riskClass = "high";
+                riskCounts.high++;
+            } else if (riskThreshold > 0.5) {
+                riskLevel = "中度風險";
+                riskClass = "medium";
+                riskCounts.medium++;
+            } else {
+                riskCounts.low++;
+            }
+
+            let suggestion = "請保持良好習慣，定期更新密碼。";
+            if (/Locker Ransomware|屏幕鎖定|用戶壓力|文件不可訪問|無法登錄/.test(userInput)) {
+                suggestion = "檢測到鎖屏勒索問題，建議實施零信任架構。";
+            }
+
+            document.getElementById('results').innerHTML = `
+                <h2>風險評估結果</h2>
+                <p><strong>風險等級：</strong> ${riskLevel}</p>
+                <p><strong>建議：</strong> ${suggestion}</p>
+                <p>點擊人次：${clickCount}</p>
+            `;
+            updateChart();
+        }
+
+        function updateChart() {
+            const ctx = document.getElementById('riskChart').getContext('2d');
+            if (riskChart) riskChart.destroy();
+            riskChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['低風險', '中度風險', '高風險'],
+                    datasets: [{
+                        label: '風險評估結果',
+                        data: [riskCounts.low, riskCounts.medium, riskCounts.high],
+                        backgroundColor: ['#388e3c', '#f57c00', '#d32f2f']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
